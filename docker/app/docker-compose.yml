@@ -1,0 +1,22 @@
+services:
+  backend:
+    image: jhungminwoo/${DOCKER_IMAGE_NAME}:latest
+    container_name: ${DOCKER_CONTAINER_NAME}
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:${DB_PORT}/${DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      SPRING_PROFILES_ACTIVE: dev
+      TZ: Asia/Seoul  # 타임존 설정
+    depends_on:
+      - postgres
+    networks:
+      - moongch-network
+    restart: on-failure
+
+networks:
+  moongch-network:
+    driver: bridge
+    external: true
