@@ -1,6 +1,5 @@
-package com.devsco.everyteen.domains.swaggertest;
+package com.devsco.moongch.domains.swaggertest;
 
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
