@@ -20,7 +20,7 @@
 **/*.dbmdl
 **/*.jfm
 **/charts
-**/docker-compose*
+docker/app/docker-compose.yml
 **/compose*
 **/target
 **/Dockerfile*

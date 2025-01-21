@@ -1,21 +1,4 @@
 services:
-  backend:
-    image: jhungminwoo/${DOCKER_IMAGE_NAME}:latest
-    container_name: ${DOCKER_CONTAINER_NAME}
-    ports:
-      - 8080:8080
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:${DB_PORT}/${DB_NAME}
-      SPRING_DATASOURCE_USERNAME: ${DB_USER}
-      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
-      SPRING_PROFILES_ACTIVE: dev
-      TZ: Asia/Seoul  # 타임존 설정
-    depends_on:
-      - postgres
-    networks:
-      - moongch-network
-    restart: on-failure
-
   nginx_ui:
     image: jc21/nginx-proxy-manager:latest
     container_name: nginx_manager
@@ -44,6 +27,18 @@ services:
       - ${DB_PORT}:${DB_PORT}  # PostgreSQL 기본 포트
     networks:
       - moongch-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    container_name: pgadmin4
+    ports:
+      - 5050:5050
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: password
+    volumes:
+      - /home/ubuntu/db/pgadmin:/var/lib/pgadmin
 
 networks:
   moongch-network:
