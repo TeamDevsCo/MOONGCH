@@ -1,11 +1,11 @@
 services:
   backend:
-    image: 'jhungminwoo/everyteen-be-app:latest'
-    container_name: everyteen-be-app
+    image: jhungminwoo/${DOCKER_IMAGE_NAME}:latest
+    container_name: ${DOCKER_CONTAINER_NAME}
     ports:
-      - '8080:8080'
+      - 8080:8080
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${DB_NAME}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:${DB_PORT}/${DB_NAME}
       SPRING_DATASOURCE_USERNAME: ${DB_USER}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
       SPRING_PROFILES_ACTIVE: dev
@@ -13,22 +13,22 @@ services:
     depends_on:
       - postgres
     networks:
-      - everyteen-network
+      - moongch-network
     restart: on-failure
 
   nginx_ui:
-    image: 'jc21/nginx-proxy-manager:latest'
+    image: jc21/nginx-proxy-manager:latest
     container_name: nginx_manager
     restart: unless-stopped
     ports:
-      - '80:80' # Public HTTP Port
-      - '81:81' # Public HTTPS Port
-      - '443:443' # Admin Web Port
+      - 80:80 # Public HTTP Port
+      - 81:81 # Public HTTPS Port
+      - 443:443 # Admin Web Port
     volumes:
       - /home/ubuntu/nginx_proxy_manager/data:/data
       - /home/ubuntu/letsencrypt:/etc/letsencrypt
     networks:
-      - everyteen-network
+      - moongch-network
 
   postgres:
     image: postgres:16-alpine
@@ -41,11 +41,11 @@ services:
       - /home/ubuntu/db/data:/var/lib/postgresql/data
       - /home/ubuntu/db/initdb.d:/docker-entrypoint-initdb.d
     ports:
-      - 5432:5432  # PostgreSQL 기본 포트
+      - ${DB_PORT}:${DB_PORT}  # PostgreSQL 기본 포트
     networks:
-      - everyteen-network
+      - moongch-network
 
 networks:
-  everyteen-network:
+  moongch-network:
     driver: bridge
     external: true
