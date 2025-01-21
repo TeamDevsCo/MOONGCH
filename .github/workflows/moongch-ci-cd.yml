@@ -14,7 +14,8 @@ on:
 
 env:
   REGISTRY: docker.io
-  IMAGE_NAME: be-everyteen-app
+  IMAGE_NAME: be-moongch-app
+  HOST_NAME: moongch
 
 jobs:
   build-and-push-image:
@@ -49,7 +50,7 @@ jobs:
     - name: 🔑 executing remote ssh && deploy with docker-compose
       uses: appleboy/ssh-action@v1.2.0
       with:
-        host: ${{ secrets.HOST_NAME }}
+        host: ${{ secrets.HOST_NAME }}.com
         username: ubuntu
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.SSH_PORT }}
