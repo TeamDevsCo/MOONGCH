@@ -48,7 +48,7 @@ jobs:
     - name: 🔑 executing remote ssh && deploy with docker-compose
       uses: appleboy/ssh-action@v1.2.0
       with:
-        host: ${{ vars.FULL_DOMAIN_NAME }}.com
+        host: ${{ vars.FULL_DOMAIN_NAME }}
         username: ubuntu
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.SSH_PORT }}
