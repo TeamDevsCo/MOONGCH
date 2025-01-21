@@ -5,7 +5,7 @@ spring:
       on-profile: test
 
   datasource:
-    url: jdbc:h2:file:./build/h2db/testdb;INIT=CREATE SCHEMA IF NOT EXISTS everyteen
+    url: jdbc:h2:file:./build/h2db/testdb;INIT=CREATE SCHEMA IF NOT EXISTS moongch
     driverClassName: org.h2.Driver
     username: sa
     password:

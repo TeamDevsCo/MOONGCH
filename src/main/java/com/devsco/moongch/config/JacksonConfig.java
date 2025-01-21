@@ -1,4 +1,4 @@
-package com.devsco.everyteen.config;
+package com.devsco.moongch.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;

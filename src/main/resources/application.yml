@@ -1,6 +1,6 @@
 spring:
   application:
-    name: everyteen  # 어플리케이션 이름 설정
+    name: moongch  # 어플리케이션 이름 설정
 
   jpa:
     hibernate:
@@ -23,7 +23,7 @@ springdoc:
       operations-sorter: method  # delete - get - patch - post - put 순으로 정렬, alpha를 사용하면 알파벳 순으로 정렬 가능
     show-login-endpoint: true
     servers:
-      - "https://everyteen.site"
+      - "https://moongch.com"
       - "http://localhost:8080"
 logging:
   level:

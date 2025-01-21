@@ -1,16 +1,16 @@
-name: everyteen-be-app CI/CD
+name: moongch-be-app CI/CD
 
 on:
   push:
     branches: [ "develop" ]
     paths-ignore: # 이 경로의 파일들이 변경되면 트리거되지 않음
-      - ".github/*"  
-      - "docs/readme.md" 
+      - ".github/*"
+      - "docs/readme.md"
   pull_request:
     branches: [ "develop" ]
     paths-ignore: # 이 경로의 파일들이 변경되면 트리거되지 않음
-      - ".github/*"  
-      - "docs/readme.md" 
+      - ".github/*"
+      - "docs/readme.md"
 
 env:
   REGISTRY: docker.io
@@ -59,4 +59,4 @@ jobs:
             docker-compose up -d
             docker image prune -f
             docker ps -a
-    
+

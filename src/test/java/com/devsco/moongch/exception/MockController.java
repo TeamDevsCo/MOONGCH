@@ -1,4 +1,4 @@
-package com.devsco.everyteen.exception;
+package com.devsco.moongch.exception;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
