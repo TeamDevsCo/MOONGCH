@@ -37,7 +37,8 @@ out/
 .vscode/
 
 ### 환경 변수 ###
-.env
+docker/app/.env
+docker/infra/.env
 
 ### 기타 파일 ###
 docker-build-and-push.sh
