@@ -9,7 +9,7 @@ on:
   pull_request:
     branches: [ "develop" ]
     paths-ignore:
-      - ".github/*"
+      - ".github/**"
       - "docs/readme.md"
     types: [ opened, synchronize, reopened, closed ] # PR의 상태 변경 이벤트
 
