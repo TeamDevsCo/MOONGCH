@@ -8,9 +8,10 @@ on:
       - "docs/readme.md"
   pull_request:
     branches: [ "develop" ]
-    paths-ignore: # 이 경로의 파일들이 변경되면 트리거되지 않음
+    paths-ignore:
       - ".github/*"
       - "docs/readme.md"
+    types: [ opened, synchronize, reopened, closed ] # PR의 상태 변경 이벤트
 
 env:
   REGISTRY: docker.io
@@ -40,6 +41,7 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKER_IMAGE_NAME }}:latest
 
   deploy:
+    if: ${{ github.event.pull_request.merged == true && github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     environment: dev
     needs: build-and-push-image  # build-and-push-image job이 성공해야만 실행
