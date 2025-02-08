@@ -1,8 +1,8 @@
 ---
-name: 기능 및 파일 수정
+name: update_feature_or_file
 about: 기능 및 파일 수정 템플릿
 title: ''
-labels: "\U0001F527 FIX"
+labels: "\U0001F680 FEATURES, \U0001F527 FIX"
 assignees: ''
 
 ---

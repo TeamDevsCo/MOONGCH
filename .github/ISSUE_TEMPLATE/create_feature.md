@@ -1,5 +1,5 @@
 ---
-name: 새로운 기능 추가
+name: create_feature
 about: 새로운 기능 추가 템플릿
 title: ''
 labels: "\U0001F680 FEATURES"
