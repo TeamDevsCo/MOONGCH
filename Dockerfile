@@ -8,7 +8,7 @@ WORKDIR /app
 COPY ./build.gradle ./settings.gradle ./
 
 # 프로젝트에 필요한 의존성 다운로드
-RUN gradle clean build -x test --no-daemon
+RUN gradle dependencies --no-daemon
 
 # 나머지 소스 코드 및 리소스 복사
 COPY ./ ./
