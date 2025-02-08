@@ -14,7 +14,7 @@ RUN gradle clean build -x test --no-daemon
 COPY ./ ./
 
 # Gradle 빌드 실행
-RUN gradle clean build --no-daemon
+RUN gradle clean build -x test --no-daemon
 
 # 런타임 이미지(공식 OpenJDK 배포판, 기존 OpenJDK 이미지는 deprecated 됨)
 FROM eclipse-temurin:21-jre
