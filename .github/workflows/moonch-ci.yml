@@ -9,9 +9,10 @@ on:
 env:
   REGISTRY: docker.io
 
+jobs:
   build-and-push-image:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }} # 테스트 워크 플로우가 성공해야만 수행
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }} # 테스트 워크 플로우가 성공해야만 수행
 
     steps:
       - name: ⬆️ Checkout repository # 러너 환경에서 develop 브랜치의 코드를 가져오는 단계
