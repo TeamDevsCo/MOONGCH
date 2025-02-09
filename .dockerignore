@@ -34,4 +34,5 @@ LICENSE
 README.md
 
 **/src/main/generated/
+**/src/test/
 
