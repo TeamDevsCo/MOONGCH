@@ -1,9 +1,10 @@
 name: moongch-be-app Deploy
 
-pull_request:
-  branches: [ "develop" ]
-  types:
-    - closed  # PR이 닫혔을 때 실행
+on:
+  pull_request:
+    branches: [ "develop" ]
+    types:
+      - closed  # PR이 닫혔을 때 실행
 
 jobs:
   deploy:
