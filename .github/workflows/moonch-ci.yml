@@ -5,6 +5,13 @@ on:
     workflows: [ moongch-be-app Test ] # 테스트 워크플로우
     types: [ completed ] # 테스트가 완료된 후 실행
 
+  pull_request:
+    branches: [ 'develop' ]
+    paths-ignore:
+      - '.github/**'
+      - 'docs/readme.md'
+    types: [ opened, synchronize, reopened ] # PR의 상태 변경 이벤트
+
 env:
   REGISTRY: docker.io
 
