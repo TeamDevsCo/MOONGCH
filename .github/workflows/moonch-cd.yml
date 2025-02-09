@@ -1,10 +1,10 @@
 name: moongch-be-app Deploy
 
 pull_request:
-  branches: [ "develop" ]
+  branches: [ develop ]
   paths-ignore:
-    - ".github/**"
-    - "docs/readme.md"
+    - '.github/**'
+    - 'docs/readme.md'
   types: [ closed ] # PR의 상태 변경 이벤트
 
 jobs:
