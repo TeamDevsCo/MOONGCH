@@ -1,11 +1,10 @@
 name: moongch-be-app Deploy
 
-pull_request:
-  branches: [ develop ]
-  paths-ignore:
+push:
+  branches: [ 'develop' ]
+  paths-ignore: # 이 경로의 파일들이 변경되면 트리거되지 않음
     - '.github/**'
     - 'docs/readme.md'
-  types: [ closed ] # PR의 상태 변경 이벤트
 
 jobs:
   deploy:
