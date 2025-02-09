@@ -1,0 +1,30 @@
+name: moongch-be-app Deploy
+
+pull_request:
+  branches: [ "develop" ]
+  paths-ignore:
+    - ".github/**"
+    - "docs/readme.md"
+  types: [ closed ] # PR의 상태 변경 이벤트
+
+jobs:
+  deploy:
+    if: ${{ github.event.pull_request.merged == true }}
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+      - name: 🔑 executing remote ssh && deploy with docker-compose
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ vars.FULL_DOMAIN_NAME }}
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKER_IMAGE_NAME }}:latest
+            cd ${{ secrets.DOCKER_COMPOSE_PATH }}
+            docker-compose down
+            docker-compose up -d
+            docker image prune -f
+            docker ps -a

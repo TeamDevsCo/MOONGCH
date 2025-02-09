@@ -1,0 +1,35 @@
+name: moongch-be-app Test
+
+on:
+  push:
+    branches: [ "develop" ]
+    paths-ignore: # 이 경로의 파일들이 변경되면 트리거되지 않음
+      - ".github/**"
+      - "docs/readme.md"
+  pull_request:
+    branches: [ "develop" ]
+    paths-ignore:
+      - ".github/**"
+      - "docs/readme.md"
+    types: [ opened, synchronize, reopened ] # PR의 상태 변경 이벤트
+
+jobs:
+  unit-test:
+    runs-on: ubuntu-smallest
+
+    steps:
+      - name: ⬆️ Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ☕ Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: 🐘 Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: 🧪 Run Tests
+        run: ./gradlew test
+
