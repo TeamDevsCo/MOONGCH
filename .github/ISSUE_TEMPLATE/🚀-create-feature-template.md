@@ -1,5 +1,5 @@
 ---
-name: create_feature
+name: "\U0001F680 Create Feature Template"
 about: 새로운 기능 추가 템플릿
 title: ''
 labels: "\U0001F680 FEATURES"
