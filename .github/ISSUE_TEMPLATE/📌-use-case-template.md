@@ -3,7 +3,7 @@ name: "\U0001F4CC Use Case Template"
 about: 프로젝트의 주요 기능 개발을 위한 이슈
 title: ''
 labels: "\U0001F4CC USECASE"
-assignees: minwoorich
+assignees: ''
 
 ---
 
@@ -12,9 +12,9 @@ assignees: minwoorich
 - 사용자가 이메일을 변경할 수 있도록 한다.
 
 ## ✅ 주요 작업 목록 (Task)
-- [ ] [#XX] [FRONT] 이메일 변경 UI 구현
-- [ ] [#XX] [BACK] 이메일 변경 API 개발
-- [ ] [#XX] [TEST] 이메일 변경 테스트 케이스 작성
+- [ ] [FE] 이메일 변경 UI 구현
+- [ ] [BE] 이메일 변경 API 개발
+- [ ] [TEST] 이메일 변경 테스트 케이스 작성
 
 ## 🎯 완료 기준 (Definition of Done)
 - [ ] 이메일 변경이 정상적으로 수행됨

@@ -2,7 +2,7 @@
 name: "\U0001F41B Bug Report Template"
 about: 버그 리포트 템플릿
 title: ''
-labels: "\U0001F41B BUG, \U0001F680 FEATURES, \U0001F527 FIX"
+labels: "\U0001F41B BUG"
 assignees: ''
 
 ---
