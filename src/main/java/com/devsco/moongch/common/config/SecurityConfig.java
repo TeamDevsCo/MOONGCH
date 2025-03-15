@@ -1,4 +1,4 @@
-package com.devsco.moongch.config;
+package com.devsco.moongch.common.config;
 
 import com.devsco.moongch.OAuth.CustomOAuth2Service;
 import com.devsco.moongch.OAuth.HttpCookieOAuth2AuthorizationRequestRepository;

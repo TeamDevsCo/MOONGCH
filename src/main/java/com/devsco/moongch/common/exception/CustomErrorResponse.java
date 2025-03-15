@@ -1,4 +1,4 @@
-package com.devsco.moongch.exception;
+package com.devsco.moongch.common.exception;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;

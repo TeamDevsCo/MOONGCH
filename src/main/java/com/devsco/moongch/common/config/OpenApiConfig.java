@@ -1,4 +1,4 @@
-package com.devsco.moongch.config;
+package com.devsco.moongch.common.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
