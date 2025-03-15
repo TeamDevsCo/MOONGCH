@@ -1,4 +1,4 @@
-package com.devsco.moongch.config;
+package com.devsco.moongch.common.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
