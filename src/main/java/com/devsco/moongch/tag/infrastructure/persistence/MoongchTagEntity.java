@@ -1,4 +1,4 @@
-package com.devsco.moongch.moongchs.infrastructure;
+package com.devsco.moongch.tag.infrastructure.persistence;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,14 +12,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(schema = "moongch", name = "personal_moongch")
+@Table(schema = "moongch", name = "moongch_tag")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access =AccessLevel.PRIVATE)
 @Builder
-public class PersonalMoongchEntity {
-
+public class MoongchTagEntity {
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
+  private Long moongchId;
+  private Long tagId;
 }

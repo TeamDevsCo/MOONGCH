@@ -1,4 +1,4 @@
-package com.devsco.moongch.moongchs.infrastructure;
+package com.devsco.moongch.moongchs.infrastructure.persistence;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,25 +14,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(schema = "moongch", name = "moongch")
+@Table(schema = "moongch", name = "personal_moongch")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access =AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
-public class MoongchEntity {
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Id
-  private Long id;
-  private Long usersId;
-  private String title;
-  private String description;
-  private Boolean isTemp;
-  private Boolean isOrigin;
-  @Enumerated(EnumType.STRING)
-  private Type type;
+public class PersonalMoongchEntity {
 
-  @Getter
-  enum Type {
-    TEAM, PERSONAL
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
+  @Enumerated(EnumType.STRING)
+  private Visibility visibility;
+
+  public enum Visibility {
+    PRIVATE, PUBLIC
   }
 }
