@@ -3,6 +3,17 @@ spring:
     activate:
       on-profile: dev
 
+# 구현중
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope: openid, profile, email # openid 추가시 OIDC 플로우
+            redirect-uri: "http://localhost:8080/login/oauth2/code/google"
+
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://${DOMAIN}:${DB_PORT}/${DB_NAME}?currentSchema=${DB_SCHEMA}

@@ -1,28 +1,76 @@
 package com.devsco.moongch.common.config;
 
+import com.devsco.moongch.OAuth.CustomOAuth2Service;
+import com.devsco.moongch.OAuth.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.devsco.moongch.OAuth.JwtAuthenticationFilter;
+import com.devsco.moongch.OAuth.JwtProvider;
+import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
+import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
+@Log4j2
 public class SecurityConfig {
 
+  private final CustomOAuth2Service customOAuth2Service;
+
   @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+  public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtProvider jwtProvider) throws Exception {
+    http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // TEST IF_REQUIRED
       .csrf(AbstractHttpConfigurer::disable)
       .cors(AbstractHttpConfigurer::disable)
       .httpBasic(AbstractHttpConfigurer::disable)
       .formLogin(AbstractHttpConfigurer::disable)
-      .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+      .authorizeHttpRequests(auth -> auth
+        .requestMatchers("/oauth2/authorization/**", "/login/oauth2/**").permitAll()
+        .anyRequest().authenticated()
+      )
+      .oauth2Login(oauth2 -> oauth2
+        // 쿠키 기반 AuthorizationRequestRepository 등록
+        .authorizationEndpoint(authorization -> authorization
+          .authorizationRequestRepository(cookieAuthorizationRequestRepository())
+        )
+        .userInfoEndpoint(userInfo -> userInfo
+          .userService(customOAuth2Service)
+        )
+        .successHandler((request, response, authentication) -> {
+          log.info(">>> OAuth2 successHandler triggered!");
+          OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
+          String email = oauth2User.getAttributes().get("email").toString();
+          String jwt = jwtProvider.createToken(email);
+
+
+          // JWT를 HTTP-Only 쿠키에 저장
+          Cookie jwtCookie = new Cookie("JWT_TOKEN", jwt);
+          jwtCookie.setHttpOnly(true);
+          jwtCookie.setSecure(false); // 개발 환경에서는 false, 배포 시 HTTPS 사용 시 true로 변경
+          jwtCookie.setPath("/");
+          jwtCookie.setMaxAge(3600); // 1시간
+          response.addCookie(jwtCookie);
+
+          response.sendRedirect("/home");
+        })
+      )
+      .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
 
     return http.build();
+  }
+
+  @Bean
+  public AuthorizationRequestRepository<OAuth2AuthorizationRequest> cookieAuthorizationRequestRepository() {
+    return new HttpCookieOAuth2AuthorizationRequestRepository();
   }
 }
