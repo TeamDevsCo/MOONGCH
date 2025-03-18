@@ -1,10 +1,7 @@
 package com.devsco.moongch.common.config;
 
-import com.devsco.moongch.OAuth.CustomOAuth2Service;
-import com.devsco.moongch.OAuth.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.devsco.moongch.OAuth.JwtAuthenticationFilter;
-import com.devsco.moongch.OAuth.JwtProvider;
-import jakarta.servlet.http.Cookie;
+import com.devsco.moongch.OAuth.*;
+import com.devsco.moongch.Utill.CookieUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
@@ -28,18 +25,21 @@ public class SecurityConfig {
   private final CustomOAuth2Service customOAuth2Service;
 
   @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtProvider jwtProvider) throws Exception {
-    http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+  public SecurityFilterChain securityFilterChain(HttpSecurity http,
+                                                 JwtProvider jwtProvider,
+                                                 JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) throws Exception {
+    http
+      .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
       .csrf(AbstractHttpConfigurer::disable)
       .cors(AbstractHttpConfigurer::disable)
       .httpBasic(AbstractHttpConfigurer::disable)
       .formLogin(AbstractHttpConfigurer::disable)
+      .logout(logout -> logout.logoutUrl("/perform_logout"))
       .authorizeHttpRequests(auth -> auth
-        .requestMatchers("/oauth2/authorization/**", "/login/oauth2/**").permitAll()
+        .requestMatchers("/oauth2/authorization/**", "/login/oauth2/**","/logout").permitAll()
         .anyRequest().authenticated()
       )
       .oauth2Login(oauth2 -> oauth2
-        // 쿠키 기반 AuthorizationRequestRepository 등록
         .authorizationEndpoint(authorization -> authorization
           .authorizationRequestRepository(cookieAuthorizationRequestRepository())
         )
@@ -51,21 +51,13 @@ public class SecurityConfig {
           OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
           String email = oauth2User.getAttributes().get("email").toString();
           String jwt = jwtProvider.createToken(email);
-
-
-          // JWT를 HTTP-Only 쿠키에 저장
-          Cookie jwtCookie = new Cookie("JWT_TOKEN", jwt);
-          jwtCookie.setHttpOnly(true);
-          jwtCookie.setSecure(false); // 개발 환경에서는 false, 배포 시 HTTPS 사용 시 true로 변경
-          jwtCookie.setPath("/");
-          jwtCookie.setMaxAge(3600); // 1시간
-          response.addCookie(jwtCookie);
-
+          log.info("AddCookie before");
+          CookieUtils.addCookie(response, "JWT_TOKEN", jwt, 3600);
           response.sendRedirect("/home");
         })
       )
-      .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
-
+      .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
+      .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint));
     return http.build();
   }
 

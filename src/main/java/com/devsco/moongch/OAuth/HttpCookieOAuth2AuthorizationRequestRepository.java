@@ -15,7 +15,6 @@ public class HttpCookieOAuth2AuthorizationRequestRepository
 
   @Override
   public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
-    // 쿠키에서 OAuth2AuthorizationRequest를 찾아 역직렬화
     return CookieUtils.getCookie(request, OAUTH2_AUTH_REQUEST_COOKIE_NAME)
       .map(cookie -> CookieUtils.deserialize(cookie, OAuth2AuthorizationRequest.class))
       .orElse(null);
@@ -26,18 +25,15 @@ public class HttpCookieOAuth2AuthorizationRequestRepository
                                        HttpServletRequest request,
                                        HttpServletResponse response) {
     if (authorizationRequest == null) {
-      // null이면 쿠키 삭제
       removeAuthorizationRequestCookies(request, response);
       return;
     }
 
-    // 쿠키에 OAuth2AuthorizationRequest 직렬화하여 저장
     CookieUtils.addCookie(response,
             OAUTH2_AUTH_REQUEST_COOKIE_NAME,
             CookieUtils.serialize(authorizationRequest),
             COOKIE_EXPIRE_SECONDS);
 
-    // 필요하다면, 리다이렉트 URI도 별도 쿠키로 저장 가능
     String redirectUriAfterLogin = request.getParameter(REDIRECT_URI_PARAM_COOKIE_NAME);
     if (redirectUriAfterLogin != null) {
       CookieUtils.addCookie(response,
@@ -49,11 +45,8 @@ public class HttpCookieOAuth2AuthorizationRequestRepository
 
   @Override
   public OAuth2AuthorizationRequest removeAuthorizationRequest(HttpServletRequest request, HttpServletResponse response) {
-    // 1) 쿠키에 저장된 요청 정보를 읽어온 뒤
     OAuth2AuthorizationRequest authRequest = loadAuthorizationRequest(request);
-    // 2) 쿠키 삭제
     removeAuthorizationRequestCookies(request, response);
-    // 3) 이전에 저장된 AuthorizationRequest를 반환
     return authRequest;
   }
 
