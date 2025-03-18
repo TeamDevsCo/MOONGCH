@@ -1,7 +1,7 @@
 package com.devsco.moongch.common.config;
 
-import com.devsco.moongch.OAuth.*;
-import com.devsco.moongch.Utill.CookieUtils;
+import com.devsco.moongch.oauth.*;
+import com.devsco.moongch.oauth.utill.CookieUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;

@@ -1,4 +1,4 @@
-package com.devsco.moongch.OAuth;
+package com.devsco.moongch.oauth;
 
 public class JwtAuthenticationException extends RuntimeException {
   public JwtAuthenticationException(String message, Throwable cause){
