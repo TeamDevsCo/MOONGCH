@@ -1,22 +1,20 @@
 package com.devsco.moongch.OAuth;
 
-import jakarta.servlet.http.Cookie;
+import com.devsco.moongch.Utill.CookieUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Log4j2
 @RestController
 public class AuthController {
 
   @PostMapping("/logout")
-  public ResponseEntity<?> logout(HttpServletResponse response) {
-    // JWT_TOKEN 쿠키 삭제 (Set-Cookie 헤더로 만료 처리)
-    Cookie cookie = new Cookie("JWT_TOKEN", null);
-    cookie.setPath("/");
-    cookie.setHttpOnly(true);
-    cookie.setMaxAge(0); // 즉시 만료
-    response.addCookie(cookie);
+  public ResponseEntity<?> logout(HttpServletRequest request,HttpServletResponse response) {
+    CookieUtils.deleteCookie(request, response, "JWT_TOKEN");
     return ResponseEntity.ok("로그아웃 되었습니다.");
   }
 }

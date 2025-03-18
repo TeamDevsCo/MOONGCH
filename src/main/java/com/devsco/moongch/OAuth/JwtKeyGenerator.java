@@ -9,6 +9,5 @@ public class JwtKeyGenerator {
     byte[] keyBytes = new byte[32];
     secureRandom.nextBytes(keyBytes);
     String base64Key = Base64.getEncoder().encodeToString(keyBytes);
-    System.out.println(" base64 key: " + base64Key);
   }
 }

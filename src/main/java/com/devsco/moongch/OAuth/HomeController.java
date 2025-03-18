@@ -17,5 +17,4 @@ public class HomeController {
       return ResponseEntity.ok("로그인한 사용자 정보: " + oauth2User.getAttributes());
     }
   }
-
 }
