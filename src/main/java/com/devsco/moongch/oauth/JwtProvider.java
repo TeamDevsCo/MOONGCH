@@ -1,4 +1,4 @@
-package com.devsco.moongch.OAuth;
+package com.devsco.moongch.oauth;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;

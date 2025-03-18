@@ -1,4 +1,4 @@
-package com.devsco.moongch.OAuth;
+package com.devsco.moongch.oauth;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

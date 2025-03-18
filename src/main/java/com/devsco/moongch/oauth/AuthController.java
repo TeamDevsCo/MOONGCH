@@ -1,6 +1,6 @@
-package com.devsco.moongch.OAuth;
+package com.devsco.moongch.oauth;
 
-import com.devsco.moongch.Utill.CookieUtils;
+import com.devsco.moongch.oauth.utill.CookieUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;

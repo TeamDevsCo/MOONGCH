@@ -1,4 +1,4 @@
-package com.devsco.moongch.OAuth;
+package com.devsco.moongch.oauth;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;

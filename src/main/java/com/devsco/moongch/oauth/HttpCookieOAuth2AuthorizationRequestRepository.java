@@ -1,6 +1,6 @@
-package com.devsco.moongch.OAuth;
+package com.devsco.moongch.oauth;
 
-import com.devsco.moongch.Utill.CookieUtils;
+import com.devsco.moongch.oauth.utill.CookieUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;

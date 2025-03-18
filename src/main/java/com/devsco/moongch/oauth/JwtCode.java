@@ -1,4 +1,4 @@
-package com.devsco.moongch.OAuth;
+package com.devsco.moongch.oauth;
 
 public enum JwtCode {
   ACCESS,   // 토큰이 유효함
