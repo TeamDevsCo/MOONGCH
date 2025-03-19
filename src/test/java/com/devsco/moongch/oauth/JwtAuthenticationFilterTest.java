@@ -19,8 +19,8 @@ import java.io.IOException;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 
 @ExtendWith(MockitoExtension.class)
 public class JwtAuthenticationFilterTest {
@@ -42,7 +42,6 @@ public class JwtAuthenticationFilterTest {
 
   @BeforeEach
   void setUp() {
-    // 테스트 시작 전 SecurityContext를 클리어합니다.
     SecurityContextHolder.clearContext();
   }
 
@@ -50,13 +49,13 @@ public class JwtAuthenticationFilterTest {
   @DisplayName("로그아웃 엔드포인트인 경우 필터 건너뛰기 테스트")
   void testDoFilter_SkipLogoutPath() throws ServletException, IOException {
     // Given: /logout 경로인 경우
-    when(request.getServletPath()).thenReturn("/logout");
+    given(request.getServletPath()).willReturn("/logout");
 
     // When
     filter.doFilterInternal(request, response, filterChain);
 
-    // Then: 필터 체인을 그대로 호출하고, SecurityContext는 비워져 있어야 합니다.
-    verify(filterChain).doFilter(request, response);
+    // Then: 필터 체인을 그대로 호출하고, SecurityContextHolder에 인증 정보가 없어야 함
+    then(filterChain).should().doFilter(request, response);
     assertThat(SecurityContextHolder.getContext().getAuthentication()).isNull();
   }
 
@@ -66,22 +65,22 @@ public class JwtAuthenticationFilterTest {
     // Given: /home 경로와 Authorization 헤더에 유효한 토큰이 있음
     String token = "validToken";
     String email = "test@example.com";
-    when(request.getServletPath()).thenReturn("/home");
-    when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
-    when(jwtProvider.validateToken(token)).thenReturn(JwtCode.ACCESS);
-    when(jwtProvider.getEmailFromToken(token)).thenReturn(email);
+    given(request.getServletPath()).willReturn("/home");
+    given(request.getHeader("Authorization")).willReturn("Bearer " + token);
+    given(jwtProvider.validateToken(token)).willReturn(JwtCode.ACCESS);
+    given(jwtProvider.getEmailFromToken(token)).willReturn(email);
 
     // When
     filter.doFilterInternal(request, response, filterChain);
 
-    // Then: SecurityContextHolder에 인증 정보가 설정되어야 합니다.
+    // Then: SecurityContextHolder에 인증 정보가 설정되어야 함
     assertThat(SecurityContextHolder.getContext().getAuthentication()).isNotNull();
     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     assertThat(principal).isInstanceOf(DefaultOAuth2User.class);
     DefaultOAuth2User oauth2User = (DefaultOAuth2User) principal;
     Map<String, Object> attributes = oauth2User.getAttributes();
     assertThat(attributes.get("email")).isEqualTo(email);
-    verify(filterChain).doFilter(request, response);
+    then(filterChain).should().doFilter(request, response);
   }
 
   @Test
@@ -89,41 +88,42 @@ public class JwtAuthenticationFilterTest {
   void testDoFilter_InvalidToken() throws ServletException, IOException {
     // Given: /home 경로와 Authorization 헤더에 유효하지 않은 토큰이 있음
     String token = "invalidToken";
-    when(request.getServletPath()).thenReturn("/home");
-    when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
-    when(jwtProvider.validateToken(token)).thenReturn(JwtCode.DENIED);
+    given(request.getServletPath()).willReturn("/home");
+    given(request.getHeader("Authorization")).willReturn("Bearer " + token);
+    given(jwtProvider.validateToken(token)).willReturn(JwtCode.DENIED);
 
     // When
     filter.doFilterInternal(request, response, filterChain);
 
-    // Then: SecurityContextHolder에 인증 정보가 없어야 합니다.
+    // Then: SecurityContextHolder에 인증 정보가 없어야 함
     assertThat(SecurityContextHolder.getContext().getAuthentication()).isNull();
-    verify(filterChain).doFilter(request, response);
+    then(filterChain).should().doFilter(request, response);
   }
 
   @Test
   @DisplayName("헤더가 없으면 쿠키에서 토큰 추출 테스트")
   void testDoFilter_TokenFromCookie() throws ServletException, IOException {
-    // Given: /home 경로, Authorization 헤더는 null, 쿠키에 JWT_TOKEN이 존재함
+    // Given: /home 경로, Authorization 헤더는 null, 쿠키에 JWT_TOKEN 존재함
     String token = "tokenFromCookie";
     String email = "cookie@example.com";
-    when(request.getServletPath()).thenReturn("/home");
-    when(request.getHeader("Authorization")).thenReturn(null);
+    given(request.getServletPath()).willReturn("/home");
+    given(request.getHeader("Authorization")).willReturn(null);
+
     Cookie jwtCookie = new Cookie("JWT_TOKEN", token);
-    when(request.getCookies()).thenReturn(new Cookie[] { jwtCookie });
-    when(jwtProvider.validateToken(token)).thenReturn(JwtCode.ACCESS);
-    when(jwtProvider.getEmailFromToken(token)).thenReturn(email);
+    given(request.getCookies()).willReturn(new Cookie[] { jwtCookie });
+    given(jwtProvider.validateToken(token)).willReturn(JwtCode.ACCESS);
+    given(jwtProvider.getEmailFromToken(token)).willReturn(email);
 
     // When
     filter.doFilterInternal(request, response, filterChain);
 
-    // Then: 쿠키로부터 토큰을 추출하여 인증 정보가 설정되어야 합니다.
+    // Then: 쿠키에서 토큰을 추출하여 SecurityContextHolder에 인증 정보가 설정되어야 함
     assertThat(SecurityContextHolder.getContext().getAuthentication()).isNotNull();
     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     assertThat(principal).isInstanceOf(DefaultOAuth2User.class);
     DefaultOAuth2User oauth2User = (DefaultOAuth2User) principal;
     Map<String, Object> attributes = oauth2User.getAttributes();
     assertThat(attributes.get("email")).isEqualTo(email);
-    verify(filterChain).doFilter(request, response);
+    then(filterChain).should().doFilter(request, response);
   }
 }
