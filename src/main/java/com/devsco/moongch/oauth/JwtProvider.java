@@ -3,34 +3,40 @@ package com.devsco.moongch.oauth;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
 import java.security.Key;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Optional;
 
 @Component
 @Log4j2
+@RequiredArgsConstructor
 public class JwtProvider {
 
-  @Value("${JWT_SECRET}")
-  private String jwtSecret;
+  private final JwtProperties jwtProperties;
 
   private Key getSigningKey() {
-    byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
+    byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.secret());
     return Keys.hmacShaKeyFor(keyBytes);
   }
 
   public String createToken(String email) {
     Date now = new Date();
-    long jwtExpirationMs = 3600000; // 1시간
-    Date expiryDate = new Date(now.getTime() + jwtExpirationMs);
+    Date expiryDate = new Date(now.getTime() + jwtProperties.expiration().toMillis());
 
     return Jwts.builder()
       .setSubject(email)
       .setIssuedAt(now)
       .setExpiration(expiryDate)
-      .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+      .signWith(getSigningKey(), SignatureAlgorithm.forName(jwtProperties.algorithm()))
       .compact();
   }
 
@@ -58,6 +64,24 @@ public class JwtProvider {
     } catch (ExpiredJwtException e) {
       throw new JwtAuthenticationException("JWT token validation failed",e);
     }
+  }
+
+  public String extractJwtToken(HttpServletRequest request) {
+    return Optional.ofNullable(request.getHeader(jwtProperties.header()))
+      .filter(auth -> auth.startsWith(jwtProperties.prefix()+" "))
+      .map(auth -> auth.substring(7))
+      .orElseGet(() -> getCookieValue(request));
+  }
+
+
+  private String getCookieValue(HttpServletRequest request) {
+    return Optional.ofNullable(request.getCookies())
+      .stream()
+      .flatMap(Arrays::stream)
+      .filter(cookie -> "JWT_TOKEN".equals(cookie.getName()))
+      .map(Cookie::getValue)
+      .findFirst()
+      .orElse(null);
   }
 
 }

@@ -3,22 +3,33 @@ package com.devsco.moongch.oauth;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.lang.reflect.Field;
+import java.time.Duration;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
 class JwtProviderTest {
-
-  private JwtProvider jwtProvider;
+  JwtProvider jwtProvider;
 
   @BeforeEach
   void setUp() throws Exception {
-    jwtProvider = new JwtProvider();
-    String testSecret = "IfMLNo1OipdK3lVTc8zcW3Fqwwm0WSLMsFqsKG6xTdg=";
-    Field secretField = JwtProvider.class.getDeclaredField("jwtSecret");
-    secretField.setAccessible(true);
-    secretField.set(jwtProvider, testSecret);
+    JwtProperties testProperties = JwtProperties.builder()
+      .secret("IfMLNo1OipdK3lVTc8zcW3Fqwwm0WSLMsFqsKG6xTdg=")
+      .expiration(Duration.ofHours(1))
+      .header("Authorization")
+      .prefix("Bearer")
+      .issuer("moongch.com")
+      .type("JWT")
+      .algorithm("HS256")
+      .refresh(JwtProperties.Refresh.builder()
+        .expiration(Duration.ofHours(24))
+        .header("Refresh").build())
+      .build();
+    jwtProvider = new JwtProvider(testProperties);
   }
 
   @Test
