@@ -34,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       return;
     }
 
-    String token = extractJwtToken(request);
+    String token = jwtProvider.extractJwtToken(request);
 
     if (token != null && jwtProvider.validateToken(token) == JwtCode.ACCESS) {
       setAuthentication(token);
@@ -43,25 +43,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
     filterChain.doFilter(request, response);
   }
-
-  private String extractJwtToken(HttpServletRequest request) {
-    return Optional.ofNullable(request.getHeader("Authorization"))
-      .filter(auth -> auth.startsWith("Bearer "))
-      .map(auth -> auth.substring(7))
-      .orElseGet(() -> getCookieValue(request));
-  }
-
-
-  private String getCookieValue(HttpServletRequest request) {
-    return Optional.ofNullable(request.getCookies())
-      .stream()
-      .flatMap(Arrays::stream)
-      .filter(cookie -> "JWT_TOKEN".equals(cookie.getName()))
-      .map(Cookie::getValue)
-      .findFirst()
-      .orElse(null);
-  }
-
 
   private void setAuthentication(String token) {
     String email = jwtProvider.getEmailFromToken(token);

@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,22 +27,36 @@ import static org.mockito.BDDMockito.then;
 public class JwtAuthenticationFilterTest {
 
   @Mock
-  private JwtProvider jwtProvider;
+  JwtProvider jwtProvider;
 
   @Mock
-  private HttpServletRequest request;
+  HttpServletRequest request;
 
   @Mock
-  private HttpServletResponse response;
+  HttpServletResponse response;
 
   @Mock
-  private FilterChain filterChain;
+  FilterChain filterChain;
 
   @InjectMocks
-  private JwtAuthenticationFilter filter;
+  JwtAuthenticationFilter filter;
 
   @BeforeEach
   void setUp() {
+//    JwtProperties testProperties = JwtProperties.builder()
+//      .secret("IfMLNo1OipdK3lVTc8zcW3Fqwwm0WSLMsFqsKG6xTdg=")
+//      .expiration(Duration.ofHours(1))
+//      .header("Authorization")
+//      .prefix("Bearer")
+//      .issuer("moongch.com")
+//      .type("JWT")
+//      .algorithm("HS256")
+//      .refresh(JwtProperties.Refresh.builder()
+//        .expiration(Duration.ofHours(24))
+//        .header("Refresh").build())
+//      .build();
+//    jwtProvider = new JwtProvider(testProperties);
+//    filter = new JwtAuthenticationFilter(jwtProvider);
     SecurityContextHolder.clearContext();
   }
 
@@ -66,8 +81,9 @@ public class JwtAuthenticationFilterTest {
     String token = "validToken";
     String email = "test@example.com";
     given(request.getServletPath()).willReturn("/home");
-    given(request.getHeader("Authorization")).willReturn("Bearer " + token);
+//    given(request.getHeader("Authorization")).willReturn("Bearer " + token);
     given(jwtProvider.validateToken(token)).willReturn(JwtCode.ACCESS);
+    given(jwtProvider.extractJwtToken(request)).willReturn(token);
     given(jwtProvider.getEmailFromToken(token)).willReturn(email);
 
     // When
