@@ -1,16 +1,17 @@
 package com.devsco.moongch.oauth;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.stereotype.Component;
-import org.springframework.beans.factory.annotation.Value;
+
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Date;
@@ -62,7 +63,7 @@ public class JwtProvider {
         .parseClaimsJws(token);
       return JwtCode.ACCESS;
     } catch (ExpiredJwtException e) {
-      throw new JwtAuthenticationException("JWT token validation failed",e);
+      throw new JwtAuthenticationException(e);
     }
   }
 
