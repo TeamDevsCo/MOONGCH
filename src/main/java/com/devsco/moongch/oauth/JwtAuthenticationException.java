@@ -1,8 +1,10 @@
 package com.devsco.moongch.oauth;
 
-public class JwtAuthenticationException extends RuntimeException {
+import org.springframework.security.core.AuthenticationException;
+
+public class JwtAuthenticationException extends AuthenticationException {
   public JwtAuthenticationException(Throwable cause){
-    super(generateMessage(cause));
+    super(generateMessage(cause),cause);
   }
 
   private static String generateMessage(Throwable cause) {

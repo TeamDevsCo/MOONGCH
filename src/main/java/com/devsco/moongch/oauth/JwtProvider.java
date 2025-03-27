@@ -1,9 +1,6 @@
 package com.devsco.moongch.oauth;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.Cookie;
@@ -62,7 +59,7 @@ public class JwtProvider {
         .build()
         .parseClaimsJws(token);
       return JwtCode.ACCESS;
-    } catch (ExpiredJwtException e) {
+    } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
       throw new JwtAuthenticationException(e);
     }
   }
