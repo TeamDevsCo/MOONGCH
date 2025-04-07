@@ -16,11 +16,13 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://${DOMAIN}:${DB_PORT}/${DB_NAME}?currentSchema=everyeen
+    url: jdbc:postgresql://${DOMAIN}:${DB_PORT}/${DB_NAME}?currentSchema=${DB_SCHEMA}
     username: ${DB_USER}
     password: ${DB_PASSWORD}
 
   jpa:
+    hibernate:
+      ddl-auto: create  # 테이블이 없을 경우 생성, 테이블이 있을 경우 변경사항을 반영
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
