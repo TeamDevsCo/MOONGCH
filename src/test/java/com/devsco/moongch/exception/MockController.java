@@ -21,7 +21,7 @@ public class MockController {
     if (true) {
       throw new IllegalArgumentException("IllegalArgumentException 발생");
     }
-    return "Hello";
+    return "Hello!!";
   }
 
   record MockRequest(
