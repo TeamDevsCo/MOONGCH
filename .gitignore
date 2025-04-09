@@ -39,9 +39,10 @@ out/
 ### 환경 변수 ###
 docker/app/.env
 docker/infra/.env
+
+/.env*
 /.env.dev
 /.env*
 
 ### 기타 파일 ###
 docker-build-and-push.sh
-
