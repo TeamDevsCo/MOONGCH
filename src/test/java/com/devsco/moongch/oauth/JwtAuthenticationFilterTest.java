@@ -2,7 +2,6 @@ package com.devsco.moongch.oauth;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,8 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 
@@ -25,7 +22,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
 @ExtendWith(MockitoExtension.class)
-@MockitoSettings(strictness = Strictness.LENIENT) // ✅ 핵심: Unnecessary Stubbing 방지
 public class JwtAuthenticationFilterTest {
 
   @Mock
@@ -103,8 +99,6 @@ public class JwtAuthenticationFilterTest {
     String email = "cookie@example.com";
 
     given(request.getServletPath()).willReturn("/home");
-    given(request.getHeader("Authorization")).willReturn(null);
-    given(request.getCookies()).willReturn(new Cookie[]{ new Cookie("JWT_TOKEN", token) });
     given(jwtProvider.extractJwtToken(request)).willReturn(token);
     given(jwtProvider.validateToken(token)).willReturn(JwtCode.ACCESS);
     given(jwtProvider.getEmailFromToken(token)).willReturn(email);
