@@ -1,4 +1,4 @@
-package com.devsco.moongch.oauth;
+package com.devsco.moongch.common.oauth;
 
 import java.security.SecureRandom;
 import java.util.Base64;

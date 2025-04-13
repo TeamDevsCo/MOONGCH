@@ -1,8 +1,7 @@
-package com.devsco.moongch.oauth;
+package com.devsco.moongch.common.oauth;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
@@ -23,9 +22,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   private final JwtProvider jwtProvider;
 
   @Override
-  protected void doFilterInternal(@NonNull HttpServletRequest request,
-                                  @NonNull HttpServletResponse response,
-                                  @NonNull FilterChain filterChain)
+  public void doFilterInternal(@NonNull HttpServletRequest request,
+                               @NonNull HttpServletResponse response,
+                               @NonNull FilterChain filterChain)
     throws ServletException, IOException {
 
     if (request.getServletPath().equals("/logout")) {

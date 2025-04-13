@@ -1,4 +1,4 @@
-package com.devsco.moongch.oauth;
+package com.devsco.moongch.common.oauth;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

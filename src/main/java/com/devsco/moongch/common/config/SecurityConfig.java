@@ -1,7 +1,11 @@
 package com.devsco.moongch.common.config;
 
-import com.devsco.moongch.oauth.*;
-import com.devsco.moongch.oauth.utill.CookieUtils;
+import com.devsco.moongch.common.oauth.CustomOAuth2Service;
+import com.devsco.moongch.common.oauth.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.devsco.moongch.common.oauth.JwtAuthenticationEntryPoint;
+import com.devsco.moongch.common.oauth.JwtAuthenticationFilter;
+import com.devsco.moongch.common.oauth.JwtProvider;
+import com.devsco.moongch.common.oauth.utill.CookieUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;

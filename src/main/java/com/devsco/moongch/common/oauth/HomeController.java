@@ -1,4 +1,4 @@
-package com.devsco.moongch.oauth;
+package com.devsco.moongch.common.oauth;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

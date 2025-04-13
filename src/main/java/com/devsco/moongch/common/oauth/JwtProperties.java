@@ -1,4 +1,4 @@
-package com.devsco.moongch.oauth;
+package com.devsco.moongch.common.oauth;
 
 import lombok.Builder;
 import org.springframework.boot.context.properties.ConfigurationProperties;

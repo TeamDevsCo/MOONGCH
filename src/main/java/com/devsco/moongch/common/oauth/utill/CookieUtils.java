@@ -1,4 +1,4 @@
-package com.devsco.moongch.oauth.utill;
+package com.devsco.moongch.common.oauth.utill;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
