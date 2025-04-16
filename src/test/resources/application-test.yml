@@ -13,6 +13,18 @@ spring:
             client-secret: GOOGLE_CLIENT_SECRET
             scope: openid, profile, email # openid 추가시 OIDC 플로우
             redirect-uri: "http://localhost:8080/login/oauth2/code/google"
+          kakao:
+            client-id: ${KAKAO_CLIENT_ID}
+            scope: profile_nickname, profile_image, account_email
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://localhost:8080/login/oauth2/code/kakao"
+            provider: kakao
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
 
   datasource:
     url: jdbc:h2:file:./build/h2db/testdb;INIT=CREATE SCHEMA IF NOT EXISTS moongch
