@@ -1,5 +1,6 @@
 package com.devsco.moongch.common.oauth;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -13,7 +14,10 @@ import java.util.Map;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor
 public class CustomOAuth2Service extends DefaultOAuth2UserService {
+
+  private final OAuth2UserInfoFactory oAuth2UserInfoFactory;
 
   @Override
   public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
@@ -21,7 +25,7 @@ public class CustomOAuth2Service extends DefaultOAuth2UserService {
     String registrationId = oAuth2UserRequest.getClientRegistration().getRegistrationId();
     log.info("OAuth2 userInfo from {}: {}", registrationId, oAuth2User.getAttributes());
 
-    OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(registrationId, oAuth2User.getAttributes());
+    OAuth2UserInfo userInfo = oAuth2UserInfoFactory.getOAuth2UserInfo(registrationId, oAuth2User.getAttributes());
 
     Map<String, Object> attributes = new HashMap<>(userInfo.getAttributes());
     attributes.put("email", userInfo.getEmail());
