@@ -1,10 +1,22 @@
 package com.devsco.moongch.domain;
 
-import lombok.RequiredArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 
-@RequiredArgsConstructor
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+@Builder
 public class Moongch {
-  private final Long moongchId;
+  private Long id;
   private final String title;
-  private final String descrition;
+  private final String description;
+  private final List<Snippets> snippets = new ArrayList<>();
+
+  @Builder
+  public Moongch(String description, String title) {
+    this.description = description;
+    this.title = title;
+  }
 }
