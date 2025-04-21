@@ -13,6 +13,11 @@ spring:
             client-secret: GOOGLE_CLIENT_SECRET
             scope: openid, profile, email # openid 추가시 OIDC 플로우
             redirect-uri: "http://localhost:8080/login/oauth2/code/google"
+          github:
+            client-id: ${GITHUB_CLIENT_ID}
+            client-secret: ${GITHUB_CLIENT_SECRET}
+            scope: read:user, user:email
+            redirect-uri: "http://localhost:8080/login/oauth2/code/github"
           kakao:
             client-id: ${KAKAO_CLIENT_ID}
             scope: profile_nickname, profile_image, account_email
