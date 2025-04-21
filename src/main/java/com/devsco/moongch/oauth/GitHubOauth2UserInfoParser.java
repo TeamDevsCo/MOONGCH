@@ -4,20 +4,21 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-@Component("google")
-public class GoogleOAuth2UserInfoParser implements OAuth2UserInfoParser {
+@Component("github")
+public class GitHubOauth2UserInfoParser implements OAuth2UserInfoParser {
 
   @Override
   public OAuth2UserInfo parse(Map<String, Object> attributes) {
     return new OAuth2UserInfo() {
       @Override
       public String getEmail() {
-        return attributes.get("email").toString();
+        Object email = attributes.get("name");
+        return email != null ? email.toString() : null;
       }
 
       @Override
       public String getId() {
-        return attributes.get("sub").toString();
+        return attributes.get("id").toString();
       }
 
       @Override
@@ -27,4 +28,3 @@ public class GoogleOAuth2UserInfoParser implements OAuth2UserInfoParser {
     };
   }
 }
-
