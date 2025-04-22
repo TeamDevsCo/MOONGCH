@@ -2,7 +2,6 @@ spring:
   config:
     activate:
       on-profile: dev
-
 # 구현중
   security:
     oauth2:
@@ -64,3 +63,9 @@ jwt:
   refresh:
     expiration: 24h
     header: Refresh
+
+server:
+  tomcat:
+    remoteip:
+      remote-ip-header: X-Forwarded-For
+      protocol-header: X-Forwarded-Proto
