@@ -14,6 +14,7 @@ import java.util.UUID;
 public class RequestLoggingFilter implements Filter {
 
   public static final String REQUEST_ID = "requestId";
+  public static final String CLIENT_IP  = "clientIp";
 
   @Override
   public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
@@ -25,12 +26,13 @@ public class RequestLoggingFilter implements Filter {
     String clientIp = Optional.ofNullable(request.getHeader("X-Forwarded-For"))
       .map(h -> h.split(",")[0].trim())
       .orElse(request.getRemoteAddr());
-    MDC.put("clientIp", clientIp);
+    MDC.put(CLIENT_IP, clientIp);
 
 
     try {
       log.info("[{}] Incoming Request: {} {} {}?{}",
-        requestId,clientIp,
+        requestId,
+        clientIp,
         request.getMethod(),
         request.getRequestURI(),
         request.getQueryString() == null ? "" : request.getQueryString());
@@ -38,7 +40,7 @@ public class RequestLoggingFilter implements Filter {
       chain.doFilter(req, res);
     } finally {
       MDC.remove(REQUEST_ID);
-      MDC.remove(clientIp);
+      MDC.remove(CLIENT_IP);
     }
   }
 
