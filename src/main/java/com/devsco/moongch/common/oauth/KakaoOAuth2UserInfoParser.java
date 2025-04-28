@@ -14,12 +14,12 @@ public class KakaoOAuth2UserInfoParser implements OAuth2UserInfoParser {
       @Override
       public String getEmail() {
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
-        return kakaoAccount != null ? (String) kakaoAccount.get("email") : null;
+        return kakaoAccount != null ? kakaoAccount.get("email").toString() : null;
       }
 
       @Override
       public String getId() {
-        return attributes.get("id") != null ? (String) attributes.get("id") : null;
+        return attributes.get("id") != null ? attributes.get("id").toString() : null;
       }
 
       @Override
