@@ -50,6 +50,8 @@ logging:
     org:
       springframework:
         web: DEBUG
+  file:
+    name: logs/app-dev.log
 
 jwt:
   secret: ${JWT_SECRET}
