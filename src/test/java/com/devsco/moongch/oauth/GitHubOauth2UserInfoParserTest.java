@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Map;
 
+import com.devsco.moongch.common.oauth.GitHubOauth2UserInfoParser;
+import com.devsco.moongch.common.oauth.OAuth2UserInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
