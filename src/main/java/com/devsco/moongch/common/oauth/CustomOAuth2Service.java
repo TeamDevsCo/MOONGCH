@@ -1,5 +1,7 @@
 package com.devsco.moongch.common.oauth;
 
+import com.devsco.moongch.oauth.OAuth2UserInfo;
+import com.devsco.moongch.oauth.OAuth2UserInfoFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.ParameterizedTypeReference;
@@ -24,34 +26,34 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CustomOAuth2Service extends DefaultOAuth2UserService {
 
-  private final OAuth2UserInfoFactory oAuth2UserInfoFactory;
+  private final OAuth2UserInfoFactory oauth2UserInfoFactory;
   private final RestTemplate restTemplate;
 
   @Override
-  public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
-    OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
-    String registrationId = oAuth2UserRequest.getClientRegistration().getRegistrationId();
-    log.info("OAuth2 userInfo from {}: {}", registrationId, oAuth2User.getAttributes());
+  public OAuth2User loadUser(OAuth2UserRequest outh2UserRequest) throws OAuth2AuthenticationException {
+    OAuth2User oauth2User = super.loadUser(outh2UserRequest);
+    String registrationId = outh2UserRequest.getClientRegistration().getRegistrationId();
+    log.info("OAuth2 userInfo from {}: {}", registrationId, oauth2User.getAttributes());
 
     OAuth2UserInfo userInfo =
-      oAuth2UserInfoFactory.getOAuth2UserInfo(registrationId, oAuth2User.getAttributes());
+      oauth2UserInfoFactory.getOAuth2UserInfo(registrationId, oauth2User.getAttributes());
 
-    Map<String, Object> attributes = new HashMap<>(oAuth2User.getAttributes());
+    Map<String, Object> attributes = new HashMap<>(oauth2User.getAttributes());
     if ("github".equals(registrationId)) {
-      String accessToken = oAuth2UserRequest.getAccessToken().getTokenValue();
+      String accessToken = outh2UserRequest.getAccessToken().getTokenValue();
       String email = fetchGithubPrimaryEmail(accessToken);
       attributes.put("email", email);
     } else {
       attributes.put("email", userInfo.getEmail());
     }
 
-    String userNameAttr = oAuth2UserRequest.getClientRegistration()
+    String userNameAttr = outh2UserRequest.getClientRegistration()
       .getProviderDetails()
       .getUserInfoEndpoint()
       .getUserNameAttributeName();
 
     return new DefaultOAuth2User(
-      oAuth2User.getAuthorities(),
+      oauth2User.getAuthorities(),
       attributes,
       userNameAttr
     );

@@ -1,8 +1,14 @@
 package com.devsco.moongch.common.oauth;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +54,8 @@ public class JwtProvider {
   }
 
   /**
-   * JWT 유효성 검사 메서드
+   * JWT 유효성 검사 메서드.
+   *
    * @param token 검증할 JWT 토큰
    * @return JwtCode.ACCESS 토큰이 유효할 때, JwtCode.EXPIRED 토큰 만료, 그 외 DENIED 반환
    */
@@ -59,14 +66,15 @@ public class JwtProvider {
         .build()
         .parseClaimsJws(token);
       return JwtCode.ACCESS;
-    } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
+    } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException
+      | IllegalArgumentException e) {
       throw new JwtAuthenticationException(e);
     }
   }
 
   public String extractJwtToken(HttpServletRequest request) {
     return Optional.ofNullable(request.getHeader(jwtProperties.header()))
-      .filter(auth -> auth.startsWith(jwtProperties.prefix()+" "))
+      .filter(auth -> auth.startsWith(jwtProperties.prefix() + " "))
       .map(auth -> auth.substring(7))
       .orElseGet(() -> getCookieValue(request));
   }

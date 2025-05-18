@@ -40,7 +40,7 @@ public class SecurityConfig {
       .formLogin(AbstractHttpConfigurer::disable)
       .logout(logout -> logout.logoutUrl("/perform_logout"))
       .authorizeHttpRequests(auth -> auth
-        .requestMatchers("/oauth2/authorization/**", "/login/oauth2/**","/logout").permitAll()
+        .requestMatchers("/oauth2/authorization/**", "/login/oauth2/**", "/logout").permitAll()
         .anyRequest().authenticated()
       )
       .oauth2Login(oauth2 -> oauth2
