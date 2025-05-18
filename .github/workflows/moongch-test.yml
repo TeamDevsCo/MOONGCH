@@ -6,7 +6,7 @@ on:
     paths-ignore:
       - '.github/**'
       - 'docs/readme.md'
-    types: [ opened, synchronize, reopened ] # PR의 상태 변경 이벤트
+    types: [ opened, synchronize ] # PR의 상태 변경 이벤트
 
 jobs:
   unit-test:
