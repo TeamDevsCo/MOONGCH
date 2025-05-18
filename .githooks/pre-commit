@@ -1,0 +1,12 @@
+#!/bin/sh
+
+echo "🤖 커밋 전 체크스타일을 수행합니다"
+./gradlew checkCodeQuality
+
+# 결과 확인
+if [ $? -ne 0 ]; then
+  echo "😣 checkstyle 실행에 실패했습니다. 커밋이 중단됩니다."
+  exit 1
+fi
+
+exit 0

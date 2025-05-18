@@ -36,7 +36,7 @@ class GoogleOAuth2UserInfoParserTest {
 
   @Test
   @DisplayName("email 필드가 없을 경우 getEmail은 null을 반환하는지 확인")
-  public void test() throws Exception{
+  public void test() throws Exception {
     // given
     Map<String, Object> attributes = Map.of("id", 99);
 

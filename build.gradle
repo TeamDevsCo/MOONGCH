@@ -44,15 +44,57 @@ tasks.withType(Checkstyle).configureEach {
   reports {
     xml.required = true // XML 형식의 결과 보고서 활성화
     xml.outputLocation = layout.buildDirectory.file("checkstyle/checkstyle-result.xml") // 출력 경로 설정
-    html.required = false // HTML 형식의 보고서 비활성화 (필요 시 true로 설정)
+    html.required = true // HTML 형식의 보고서 비활성화 (필요 시 true로 설정)
   }
 }
 
-tasks.named('check') {
-  dependsOn 'checkstyleMain'
+check.dependsOn editorconfigCheck // checkstyle이 설정 되어 있을 시, editorconfigCheck 후 checkstyle 진행
+
+// GitHooks 셋업 태스크
+tasks.register('installGitHooks', Exec) {
+  description = 'Git 훅을 설정합니다'
+  group = 'setup'
+
+  doFirst {
+    // pre-commit 훅 설정
+    def preCommitFile = file("${rootDir}/.githooks/pre-commit")
+    if (preCommitFile.exists()) {
+      preCommitFile.setExecutable(true)
+    } else {
+      throw new GradleException("pre-commit 훅 파일이 존재하지 않습니다. .githooks/pre-commit 파일을 생성하세요.")
+    }
+
+    // pre-push 훅 설정
+    def prePushFile = file("${rootDir}/.githooks/pre-push")
+    if (prePushFile.exists()) {
+      prePushFile.setExecutable(true)
+    } else {
+      throw new GradleException("pre-push 훅 파일이 존재하지 않습니다. .githooks/pre-push 파일을 생성하세요.")
+    }
+
+  }
+
+  // git config 명령 실행
+  commandLine 'git', 'config', 'core.hooksPath', '.githooks'
+
+  doLast {
+    println "Git 훅이 성공적으로 설정되었습니다."
+  }
 }
 
-check.dependsOn editorconfigCheck // checkstyle이 설정 되어 있을 시, editorconfigCheck 후 checkstyle 진행
+// 모든 프로젝트에 대한 설정을 적용하기 위해 build 태스크에 의존성 추가
+tasks.named('build') {
+  dependsOn 'installGitHooks'
+}
+
+// 테스트 없이 코드 품질 확인만 수행하는 태스크
+tasks.register('checkCodeQuality') {
+  description = '테스트 없이 코드 품질 검사만 수행합니다'
+  group = 'verification'
+
+  dependsOn 'checkstyleMain', 'checkstyleTest', 'editorconfigCheck'
+}
+
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
