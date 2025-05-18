@@ -1,6 +1,7 @@
 package com.devsco.moongch.oauth;
 
-import com.devsco.moongch.oauth.utill.CookieUtils;
+import com.devsco.moongch.common.oauth.AuthController;
+import com.devsco.moongch.common.oauth.utill.CookieUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

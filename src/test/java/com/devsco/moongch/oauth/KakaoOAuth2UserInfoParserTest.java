@@ -1,5 +1,7 @@
 package com.devsco.moongch.oauth;
 
+import com.devsco.moongch.common.oauth.KakaoOAuth2UserInfoParser;
+import com.devsco.moongch.common.oauth.OAuth2UserInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

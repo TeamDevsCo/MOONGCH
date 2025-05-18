@@ -1,7 +1,5 @@
 package com.devsco.moongch.common.oauth;
 
-import com.devsco.moongch.oauth.OAuth2UserInfo;
-import com.devsco.moongch.oauth.OAuth2UserInfoFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.ParameterizedTypeReference;
