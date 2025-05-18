@@ -3,8 +3,8 @@ package com.devsco.moongch.common.oauth;
 import org.springframework.security.core.AuthenticationException;
 
 public class JwtAuthenticationException extends AuthenticationException {
-  public JwtAuthenticationException(Throwable cause){
-    super(generateMessage(cause),cause);
+  public JwtAuthenticationException(Throwable cause) {
+    super(generateMessage(cause), cause);
   }
 
   private static String generateMessage(Throwable cause) {

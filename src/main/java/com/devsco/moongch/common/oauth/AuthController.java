@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
   @PostMapping("/logout")
-  public ResponseEntity<?> logout(HttpServletRequest request,HttpServletResponse response) {
+  public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
     CookieUtils.deleteCookie(request, response, "JWT_TOKEN");
     return ResponseEntity.ok("로그아웃 되었습니다.");
   }

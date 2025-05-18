@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Table(schema = "moongch", name = "moongch")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access =AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 public class MoongchEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
