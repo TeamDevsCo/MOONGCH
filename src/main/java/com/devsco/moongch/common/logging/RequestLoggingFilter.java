@@ -1,6 +1,10 @@
 package com.devsco.moongch.common.logging;
 
-import jakarta.servlet.*;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;
 import org.slf4j.MDC;
@@ -20,7 +24,7 @@ public class RequestLoggingFilter implements Filter {
   public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
     HttpServletRequest request = (HttpServletRequest) req;
 
-    String requestId = UUID.randomUUID().toString().substring(0,8);
+    String requestId = UUID.randomUUID().toString().substring(0, 8);
     MDC.put(REQUEST_ID, requestId);
 
     String clientIp = Optional.ofNullable(request.getHeader("X-Forwarded-For"))

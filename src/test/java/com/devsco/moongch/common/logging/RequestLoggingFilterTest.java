@@ -12,7 +12,10 @@ import org.springframework.mock.web.MockHttpServletResponse;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 
 class RequestLoggingFilterTest {
 
@@ -41,7 +44,7 @@ class RequestLoggingFilterTest {
       String rid = MDC.get(RequestLoggingFilter.REQUEST_ID);
       String cip = MDC.get(RequestLoggingFilter.CLIENT_IP);
 
-  // then
+      // then
       assertNotNull(rid, "requestId should be set in MDC");
       assertEquals("127.0.0.1", cip, "when no X-Forwarded-For, clientIp = remoteAddr");
     };

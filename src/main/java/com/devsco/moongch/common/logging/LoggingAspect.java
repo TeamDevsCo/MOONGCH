@@ -2,8 +2,12 @@ package com.devsco.moongch.common.logging;
 
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.*;
-import org.jboss.logging.MDC;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -14,7 +18,8 @@ import java.util.Arrays;
 public class LoggingAspect {
 
   @Pointcut("within(@org.springframework.web.bind.annotation.RestController *)")
-  public void restController() {}
+  public void restController() {
+  }
 
   @Before("restController() && execution(public * *(..))")
   public void logMethodEntry(JoinPoint jp) {
