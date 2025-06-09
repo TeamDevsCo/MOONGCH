@@ -2,31 +2,49 @@ package com.devsco.moongch.domain;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 public class Snippets {
+  @Setter
   private Long id;
+  @Setter
+  private Long moongchId;
   private final String ext;
-  private final List<SnippetsLine> snippetsLines = new ArrayList<>();
+  private final List<SnippetsLine> snippetsLines;
 
   @Builder
   public Snippets(String ext) {
     this.ext = ext;
+    this.snippetsLines = new ArrayList<>();
   }
 
-  public static Snippets create(String ext, List<SnippetsLine> snippetsLines) {
-    Snippets snippets = Snippets.builder().ext(ext).build();
-    snippets.getSnippetsLines().addAll(snippetsLines);
-    return snippets;
+  // 비즈니스 로직
+  public void addLine(SnippetsLine line) {
+    this.snippetsLines.add(line);
   }
 
-  public String getFullContent() {
-    return snippetsLines.stream()
-      .map(SnippetsLine::getText)
-      .collect(Collectors.joining("\n"));
+  public void addLines(List<SnippetsLine> lines) {
+    this.snippetsLines.addAll(lines);
+  }
+
+  public int getLineCount() {
+    return this.snippetsLines.size();
+  }
+
+  // 팩토리 메서드
+  public static Snippets from(com.devsco.moongch.application.SnippetsDto dto) {
+    Snippets snippet = Snippets.builder()
+      .ext(dto.ext())
+      .build();
+
+    dto.lines().forEach(lineDto -> {
+      snippet.addLine(SnippetsLine.from(lineDto));
+    });
+
+    return snippet;
   }
 }

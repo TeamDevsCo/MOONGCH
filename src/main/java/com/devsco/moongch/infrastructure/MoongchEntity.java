@@ -1,17 +1,8 @@
 package com.devsco.moongch.infrastructure;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.devsco.moongch.domain.Moongch;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(schema = "moongch", name = "moongch")
@@ -30,9 +21,37 @@ public class MoongchEntity {
   private Boolean isOrigin;
   @Enumerated(EnumType.STRING)
   private Type type;
+  Long originMoongchId;
 
   @Getter
   public enum Type {
     TEAM, PERSONAL
+  }
+
+  public static MoongchEntity of(Moongch dom) {
+    return MoongchEntity.builder()
+      .id(dom.getId())
+      .usersId(dom.getUsersId())
+      .title(dom.getTitle())
+      .description(dom.getDescription())
+      .isTemp(dom.getIsTemp())
+      .isOrigin(dom.getIsOrigin())
+      .type(Type.valueOf(dom.getType().name()))
+      .originMoongchId(dom.getOriginMoongchId())
+      .build();
+  }
+
+  public Moongch toDomain() {
+    Moongch dom = Moongch.builder()
+      .usersId(this.usersId)
+      .title(this.title)
+      .description(this.description)
+      .isTemp(this.isTemp)
+      .isOrigin(this.isOrigin)
+      .type(Moongch.Type.valueOf(this.type.name()))
+      .originMoongchId(this.originMoongchId)
+      .build();
+    dom.setId(this.id);
+    return dom;
   }
 }

@@ -16,7 +16,7 @@ class CreateMoongchUseCaseTest {
   @Test
   void create(){
     //given
-    CreateMoongchCommand command = CreateMoongchCommand.builder()
+    CreateMoongchCmd command = CreateMoongchCmd.builder()
       .title("제목")
       .description("설명")
       .build();
