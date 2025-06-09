@@ -13,12 +13,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(schema = "moongch", name = "review_streams")
+@Table(schema = "moongch", name = "reviews")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
-public class ReviewStreamsEntity {
+public class ReviewsEntity {
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private Long pid;
